@@ -1,7 +1,7 @@
 # repro-examples
 The placenta groups collection of model demonstrations using our own, and other in house python libraries. This repository is private to the group during development with the anticipation that relevant examples will be released publicly.
 
-Documentation is available at `Read the docs <https://placenta-simulator.readthedocs.io/en/latest/>`_.
+Documentation is available at [Read the Docs](https://placenta-simulator.readthedocs.io/en/latest/).
 
 
 To start working with these examples just clone these repositories to your computer.
