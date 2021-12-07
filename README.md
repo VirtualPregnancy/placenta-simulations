@@ -1,5 +1,5 @@
-# repro-examples
-The placenta groups collection of model demonstrations using our own, and other in house python libraries. This repository is private to the group during development with the anticipation that relevant examples will be released publicly.
+# Placenta and Reproductive Simulations
+The Auckland Bioengineering Institute Pregnancy Modelling Groups collection of model demonstrations using our own, and other in house python libraries. 
 
 Documentation is available at [Read the Docs](https://placenta-simulator.readthedocs.io/en/latest/).
 
