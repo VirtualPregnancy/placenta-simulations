@@ -6,13 +6,13 @@
 Welcome to our 'Virtual Pregnancy'
 ==================================
 
-Welcome to the Development and Reproductive Health team at Auckland Bioengineering Institute ('The  ABI Placenta
+Welcome to the Pregnancy Modelling team at Auckland Bioengineering Institute ('The  ABI Placenta
 Group').
 
 About our Group
 ---------------
 
-The `ABI Placenta group` is a research group focusing developing computational models that contribute to a `Virtual
+The `Pregnancy Modelling Group` is a research group focusing developing computational models that contribute to a `Virtual
 Pregnancy`.
 It was established by Dr Alys Clark (Auckland Bioengineering Institute, University of Auckland) and Dr Joanna James
 (Faculty of Medical and Health Sciences, University of Auckland)
@@ -43,6 +43,7 @@ Models that are currently available:
    
    Models/geometry/geometry_index
    Models/fetoplacental/feto_index
+   Models/uterus/uterus_index
 
 
 .. Indices and tables
