@@ -122,6 +122,8 @@ def main():
     dummy_myo_params = [0., 0., 0., 0., 0.]
     fit_myo_params = [Cact, Cactdash,Cactdashdash,Cmyo,Cdashdashtone]
     fit_myo_params_preg = [Cact_preg, Cactdash_preg, Cactdashdash_preg, Cmyo_preg, Cdashdashtone_preg]
+    flow_params = [Cshear,Cshear1,shear_offset1,shear_offset2]
+    flow_params_preg = [Cshear_preg,Cshear1_preg,shear_offset1_preg,shear_offset2_preg]
     dummy_flow_params = [0., 0., 0., 0.]
     dummy_fixed_flow_params = [0., 0., 0.]
     new_pressure = np.linspace(10, 90, num_plot) * 133. / 1000.
@@ -281,294 +283,104 @@ def main():
     plt.savefig(export_directory + '/CactComparison.png')
     plt.close()
 
+    ##############################################
+    # Active model with flow
+    ################################################
+    pressure_tm = 50.  # fixed 50mmHg pressure
+    mu = 4.0e-3  # pa.s
+    average_length_preg = 822.4  # um
+    average_length = 402.5 #um
+    system_resistance = 0# For myography experiments system resistance = 9.03E+12, flow assessments are independent
+    blood_pressure = np.linspace(10., 90., 100)
+    flow_passive = np.zeros(len(blood_pressure))
+    flow10_diam = np.zeros(len(blood_pressure))
+    flow5_diam = np.zeros(len(blood_pressure))
+    flow_active = np.zeros(len(blood_pressure))
+    for i in range(0, len(blood_pressure)):
+        pressure = blood_pressure[i] * 133. / 1000.
+        fit_passive_params = [D0, Cpass, Cpassdash]
+        fit_myo_params = [Cact, Cactdash, Cactdashdash, Cmyo, Cdashdashtone]
+        fixed_flow_params = [mu, average_length, system_resistance]
+        flow_params = [Cshear,Cshear1,shear_offset1,shear_offset2]
+        fixed_flow_params_solve = [fixed_flow_params[0], fixed_flow_params[1], 10. / (60. * 1000000000.),
+                                   fixed_flow_params[2], 1]
+        flow10_diam[i] = pg.diameter_from_pressure(fit_passive_params, fit_myo_params, flow_params,
+                                                   fixed_flow_params_solve, pressure, False)
+        fixed_flow_params_solve = [fixed_flow_params[0], fixed_flow_params[1], 5. / (60. * 1000000000.),
+                                   fixed_flow_params[2], 1]
+        flow5_diam[i] = pg.diameter_from_pressure(fit_passive_params, fit_myo_params, flow_params,
+                                                  fixed_flow_params_solve, pressure, False)
+        fit_passive_params = [D0, Cpass, Cpassdash]
+        fit_myo_params = [0., 0., 0., 0., 0.]
+        fixed_flow_params = [mu, average_length, system_resistance]
+        flow_params = [0., 0., 0., 0.]
+        fixed_flow_params_solve = [fixed_flow_params[0], fixed_flow_params[1], 0., fixed_flow_params[2], 0]
+        flow_passive[i] = pg.diameter_from_pressure(fit_passive_params, fit_myo_params, flow_params,
+                                                    fixed_flow_params_solve, pressure, False)
+        fit_passive_params = [D0, Cpass, Cpassdash]
+        fit_myo_params = [Cact, Cactdash, Cactdashdash, Cmyo, Cdashdashtone]
+        fixed_flow_params = [mu, average_length, system_resistance]
+        flow_params = [0., 0., 0., 0.]
+        fixed_flow_params_solve = [fixed_flow_params[0], fixed_flow_params[1], 0., fixed_flow_params[2], 0]
+        flow_active[i] = pg.diameter_from_pressure(fit_passive_params, fit_myo_params, flow_params,
+                                                   fixed_flow_params_solve, pressure, False)
+
+    plt.ylim([50., 160])
+    plt.plot(blood_pressure, flow_passive, color='0.5', ls=':', label="Passive model")
+    plt.plot(blood_pressure, flow_active, color='0.5', ls='--', label="Active model, flow 0 $\mu$l/min")
+    plt.plot(blood_pressure, flow5_diam, color='0.5', ls='-.', label="Active model, flow 5 $\mu$l/min")
+    plt.plot(blood_pressure, flow10_diam, color='0.5', label="Active model, flow 10 $\mu$l/min")
+    plt.xlabel("Pressure (mmHg)")
+    plt.ylabel("Diameter ($\mu$m)")
+    plt.legend()
+    plt.savefig(export_directory + '/FlowImpactNonPregnant.png')
+    plt.close()
+
+    blood_pressure = np.linspace(10., 90., 100)
+    flow_passive = np.zeros(len(blood_pressure))
+    flow50_diam = np.zeros(len(blood_pressure))
+    flow60_diam = np.zeros(len(blood_pressure))
+    flow_active = np.zeros(len(blood_pressure))
+    for i in range(0, len(blood_pressure)):
+        pressure = blood_pressure[i] * 133. / 1000.
+        fit_passive_params = [D0_preg, Cpass_preg, Cpassdash_preg]
+        fit_myo_params = [Cact_preg, Cactdash_preg, Cactdashdash_preg, Cmyo_preg, Cdashdashtone_preg]
+        fixed_flow_params = [mu, average_length_preg, system_resistance]
+        flow_params = [Cshear_preg,Cshear1_preg,shear_offset1_preg,shear_offset2_preg]
+        fixed_flow_params_solve = [fixed_flow_params[0], fixed_flow_params[1], 50. / (60. * 1000000000.),
+                                   fixed_flow_params[2], 1]
+        flow50_diam[i] = pg.diameter_from_pressure(fit_passive_params, fit_myo_params, flow_params,
+                                                   fixed_flow_params_solve, pressure, False)
+        fixed_flow_params_solve = [fixed_flow_params[0], fixed_flow_params[1], 60. / (60. * 1000000000.),
+                                   fixed_flow_params[2], 1]
+        flow60_diam[i] = pg.diameter_from_pressure(fit_passive_params, fit_myo_params, flow_params,
+                                                   fixed_flow_params_solve, pressure, False)
+        fit_passive_params = [D0_preg, Cpass_preg, Cpassdash_preg]
+        fit_myo_params = [0., 0., 0., 0., 0.]
+        fixed_flow_params = [mu, average_length_preg, system_resistance]
+        flow_params = [0., 0., 0., 0.]
+        fixed_flow_params_solve = [fixed_flow_params[0], fixed_flow_params[1], 0., fixed_flow_params[2], 0]
+        flow_passive[i] = pg.diameter_from_pressure(fit_passive_params, fit_myo_params, flow_params,
+                                                    fixed_flow_params_solve, pressure, False)
+        fit_passive_params = [D0_preg, Cpass_preg, Cpassdash_preg]
+        fit_myo_params = [Cact_preg, Cactdash_preg, Cactdashdash_preg, Cmyo_preg, Cdashdashtone_preg]
+        fixed_flow_params = [mu, average_length_preg, system_resistance]
+        flow_params = [0., 0., 0., 0.]
+        fixed_flow_params_solve = [fixed_flow_params[0], fixed_flow_params[1], 0., fixed_flow_params[2], 0]
+        flow_active[i] = pg.diameter_from_pressure(fit_passive_params, fit_myo_params, flow_params,
+                                                   fixed_flow_params_solve, pressure, False)
+
+    plt.ylim([50., 160])
+    plt.plot(blood_pressure, flow_passive, color='#F01D7F', ls=':', label="Passive model")
+    plt.plot(blood_pressure, flow_active, color='#F01D7F', ls='--', label="Active model, flow 0 $\mu$l/min")
+    plt.plot(blood_pressure, flow50_diam, color='#F01D7F', ls='-.', label="Active model, flow 50 $\mu$l/min")
+    plt.plot(blood_pressure, flow60_diam, color='#F01D7F', label="Active model, flow 60 $\mu$l/min")
+    plt.xlabel("Pressure (mmHg)")
+    plt.ylabel("Diameter ($\mu$m)")
+    plt.legend()
+    plt.savefig(export_directory + '/FlowImpactPregnant.png')
+    plt.close()
 
 if __name__ == '__main__':
     main()
 
-'''
-
-
-#plot pregnant results independently
-plt.ylim((0,250.))
-plt.xlim((0.,100.))
-plt.xlabel('Pressure (mmHg)')
-plt.ylabel('Inner diameter ($\mu$m)')
-plt.title("Rat non-pregnant radial artery (D$_0$ =  94 $\mu$m)")
-plt.errorbar(expt_pressure,expt_diameter_non_preg,expt_se_non_preg,marker='o',ls=':',color='0.5',label="Experimental data",capsize=5.)
-plt.plot(np.linspace(10,90,num_plot),active_diam, color = '0.5', label = "Active model fit")
-plt.plot(np.linspace(10,90,num_plot),passive_diam,color = '0.5',linestyle = '--',label = "Passive model fit")
-plt.legend()
-plt.show()
-
-Dmax = D0*(Cpassdash + 1)
-Dmax_preg = D0_preg*(Cpassdash_preg + 1)
-print(Dmax,Dmax_preg)
-stone =  Cmyo * np.linspace(10,90,num_plot) * active_diam / 2. + Cdashdashtone
-A = 1./(1.+np.exp(-stone))
-Tmaxact = Cact * np.exp(-((active_diam / D0 - Cactdash) / Cactdashdash) ** 2.)
-Tpass = Cpass * np.exp(Cpassdash * (active_diam / D0 - 1.))
-Tpass_preg = Cpass_preg * np.exp(Cpassdash_preg * (active_diam_preg / D0_preg - 1.))
-stone_preg =  Cmyo_preg * np.linspace(10,90,num_plot) * active_diam_preg / 2. + Cdashdashtone_preg
-A_preg = 1./(1.+np.exp(-stone_preg))
-Tmaxact_preg = Cact_preg * np.exp(-((active_diam_preg / D0_preg - Cactdash_preg) / Cactdashdash_preg) ** 2.)
-plot_np = (A*Tmaxact)/Tpass#/np.max(A*Tmaxact) #normalised active tension
-plot_p = (A_preg*Tmaxact_preg)/Tpass_preg#/np.max(A_preg*Tmaxact_preg)
-#fig, ax = plt.subplots(constrained_layout=True)
-#ax2=ax.twinx()
-#plt.xlim(10.,90.)
-#ax.set_ylim(-4.,30)
-#ax2.set_ylim(0.,1.1)
-plt.plot(np.linspace(10,90,num_plot),plot_np, color = '0.5', label = "Non-pregnant model active tension")
-plt.plot(np.linspace(10,90,num_plot),plot_p, color = '0.5', label = "Non-pregnant model passive tension")
-#plt.plot(np.linspace(10,90,num_plot),(passive_diam-active_diam)/passive_diam, color = '0.5', label = "Non-pregnant")
-#plt.plot(np.linspace(10,90,num_plot),plot_p, color = '#F01D7F', label = "Non-pregnant")
-#plt.plot(np.linspace(10,90,num_plot),(passive_diam_preg-active_diam_preg)/passive_diam_preg, color = '#F01D7F', label = "Non-pregnant")
-plt.show()
-'''
-'''
-xpos = [30.,50.,70.]
-ypos = [-1.645220431,7.837462658,2.07281238]
-error = [2.467874887,1.643298051,4.167023468]
-ax.errorbar(xpos,ypos,error,marker='o',ls=':',color='0.5',label="Non-pregnant myogenic tone",capsize=5.)
-#ax.bar(xpos,ypos,yerr=error,
-#       align='center',
-#      alpha=0.5,color = '0.5')
-plt.show()
-
-fig, ax = plt.subplots(constrained_layout=True)
-ax2=ax.twinx()
-plt.xlim(20.,80.)
-ax.set_ylim(-4.,30)
-ax2.set_ylim(0.,1.1)
-ax2.plot(np.linspace(10,90,num_plot),plot_p, color = '#F01D7F', label = "Non-pregnant model active tension")
-#ax2.plot(np.linspace(10,90,num_plot),Tpass_preg/np.max(Tpass_preg), color = '#F01D7F', label = "Non-pregnant model active tension")
-#plt.plot(np.linspace(10,90,num_plot),(passive_diam-active_diam)/passive_diam, color = '0.5', label = "Non-pregnant")
-#plt.plot(np.linspace(10,90,num_plot),plot_p, color = '#F01D7F', label = "Non-pregnant")
-#plt.plot(np.linspace(10,90,num_plot),(passive_diam_preg-active_diam_preg)/passive_diam_preg, color = '#F01D7F', label = "Non-pregnant")
-xpos = [30.,50.,70.]
-ypos = [4.363417522,14.38276927,20.09353259]
-error = [3.226036136,4.70926462,5.167192609]
-ax.errorbar(xpos,ypos,error,marker='o',ls=':',color='#F01D7F',label="Non-pregnant myogenic tone",capsize=5.)
-#ax.bar(xpos,ypos,yerr=error,
-#       align='center',
-#      alpha=0.5,color = '0.5')
-plt.show()
-
-quit()
-#plot non-pregnant results independently
-plt.ylim((0,250.))
-plt.xlim((0.,100.))
-plt.xlabel('Pressure (mmHg)')
-plt.ylabel('Inner diameter ($\mu$m)')
-plt.title("Rat pregnant radial artery (D$_0$ =  156 $\mu$m)")
-plt.errorbar(expt_pressure,expt_diameter_preg,expt_se_preg,marker='s',ls=':',color='#F01D7F',label="Experimental data",capsize=5.)
-plt.plot(np.linspace(10,90,num_plot),active_diam_preg,color = '#F01D7F', label = "Active model fit")
-plt.plot(np.linspace(10,90,num_plot),passive_diam_preg,color = '#F01D7F',linestyle = '--',label = "Passive model fit")
-plt.legend()
-plt.show()
-
-total_tension = np.linspace(0.,2.5,100)
-Cpass = Cpass/1000.
-Cact = Cact/1000.
-Cmyo = Cmyo*1000.
-Cpass_preg = Cpass_preg/1000.
-Cact_preg = Cact_preg/1000.
-Cmyo_preg = Cmyo_preg*1000.
-
-print(Cpass,Cpassdash)
-diameter_pass = np.linspace(0,2*D0,100)
-diameter = np.linspace(0,2*D0,100)
-Tpass = Cpass * np.exp(Cpassdash * (diameter_pass / D0 - 1.))
-Tmaxact = Cact * np.exp(-((diameter / D0 - Cactdash) / Cactdashdash) ** 2.)
-Anonpreg = 1./(1+np.exp(-Cmyo*total_tension-Cdashdashtone))
-
-plt.ylim((0,4.))
-plt.xlim((0.,2.))
-plt.plot(diameter_pass/D0,Tpass,color='k',linestyle = '--',label="Passive tension")
-plt.plot(diameter/D0,Tmaxact,color = 'k', linestyle = 'dotted',label = "Maximally active tension")
-plt.plot(diameter/D0,Tpass+Tmaxact,color='k', label = "Total tension with maximum activation")
-plt.legend()
-plt.xlabel("Diameter/D$_0$")
-plt.ylabel("Tension (N.m)")
-plt.title("Rat non-pregnant radial artery (D$_0$ = 94 $\mu$m)")
-plt.show()
-
-plt.xlim((0.,2.5))
-plt.plot(total_tension, Anonpreg,color = '0.5')
-plt.xlabel("Total tension (N.m)")
-plt.ylabel("Smooth muscle activation (no units)")
-plt.title("Rat non-pregnant radial artery (D$_0$ =  94 $\mu$m)")
-plt.show()
-
-diameter_pass = np.linspace(0,2*D0_preg,100)
-diameter = np.linspace(0,2*D0_preg,100)
-Tpass = Cpass_preg * np.exp(Cpassdash_preg * (diameter_pass / D0_preg - 1.))
-Tmaxact = Cact_preg * np.exp(-((diameter / D0_preg - Cactdash_preg) / Cactdashdash_preg) ** 2.)
-Apreg = 1./(1+np.exp(-Cmyo_preg*total_tension-Cdashdashtone_preg))
-
-
-plt.ylim((0,4.))
-plt.xlim((0.,2.))
-plt.plot(diameter_pass/D0_preg,Tpass,color='k',linestyle = '--',label="Passive tension")
-plt.plot(diameter/D0_preg,Tmaxact,color = 'k', linestyle = 'dotted',label = "Maximally active tension")
-plt.plot(diameter/D0_preg,Tpass+Tmaxact,color='k', label = "Total tension with maximum activation")
-plt.legend()
-plt.xlabel("Diameter/D$_0$")
-plt.ylabel("Tension (N.m)")
-plt.title("Rat pregnant radial artery (D$_0$ = 156 $\mu$m)")
-plt.show()
-
-plt.xlim((0.,2.5))
-plt.plot(total_tension, Anonpreg,color = '0.5')
-plt.xlabel("Total tension (N.m)")
-plt.ylabel("Smooth muscle activation (no units)")
-plt.title("Rat pregnant radial artery (D$_0$ =  156 $\mu$m)")
-plt.show()
-
-#msenteric vessel
-D0 = 150
-Cpass = 1.168
-Cpassdash = 7.24
-Cact = 1.108
-Cactdash = .843 #84#
-Cactdashdash = .406
-Cmyo = 7.479
-Cdashtone = 4.614 
-
-print("Mesenteric Cact (N.m) ", Cact)
-print("Mesenteric Cactdash (no units) ", Cactdash)
-print("Mesenteric Cactdashdash (no units)", Cactdashdash)
-print("Mesenteric Cmyo (m/N)", Cmyo)
-print("Mesenteric C'tone (no units)", Cdashdashtone)
-
-diameter_pass = np.linspace(0,2*D0,100)
-diameter = np.linspace(0,2*D0,100)
-Tpass = Cpass * np.exp(Cpassdash * (diameter_pass / D0 - 1.))
-print(Tpass)
-Tmaxact = Cact * np.exp(-((diameter / D0 - Cactdash) / Cactdashdash) ** 2.)
-Ames = 1./(1+np.exp(-Cmyo*total_tension+Cdashtone))
-
-plt.ylim((0,4.))
-plt.xlim((0.,2.))
-plt.plot(diameter_pass/D0,Tpass,color='k',linestyle = '--',label="Passive tension")
-plt.plot(diameter/D0,Tmaxact,color = 'k', linestyle = 'dotted',label = "Maximally active tension")
-plt.plot(diameter/D0,Tpass+Tmaxact,color='k', label = "Total tension with maximum activation")
-plt.legend()
-plt.xlabel("Diameter/D$_0$")
-plt.ylabel("Tension (N.m)")
-plt.title("Rat Mesenteric Artery (D$_0$ = 150 $\mu$m)")
-plt.show()
-
-
-#porcine coronary
-D0 = 100.8
-Cpass = 0.685
-Cpassdash = 12.61
-Cact = 1.131
-Cactdash = .910
-Cactdashdash = .343
-Cmyo =15.977
-Cdashtone = 4.180
-diameter_pass = np.linspace(0,2*D0,100)
-diameter = np.linspace(0,2*D0,100)
-Tpass = Cpass * np.exp(Cpassdash * (diameter_pass / D0 - 1.))
-Tmaxact = Cact * np.exp(-((diameter / D0 - Cactdash) / Cactdashdash) ** 2.)
-Aporc = 1./(1+np.exp(-Cmyo*total_tension+Cdashtone))
-
-plt.ylim((0,4.))
-plt.xlim((0.,2.))
-plt.plot(diameter_pass/D0,Tpass,color='k',linestyle = '--',label="Passive tension")
-plt.plot(diameter/D0,Tmaxact,color = 'k', linestyle = 'dotted',label = "Maximally active tension")
-plt.plot(diameter/D0,Tpass+Tmaxact,color='k', label = "Total tension with maximum activation")
-plt.legend()
-plt.xlabel("Diameter/D$_0$")
-plt.ylabel("Tension (N.m)")
-plt.title("Porcine coronary artery (D$_0$ =  num_plot $\mu$m)")
-plt.show()
-
-plt.xlim((0.,2.5))
-plt.plot(total_tension, Ames,color = 'k')
-plt.xlabel("Total tension (N.m)")
-plt.ylabel("Smooth muscle activation (no units)")
-plt.title("Rat Mesenteric Artery (D$_0$ = 150 $\mu$m)")
-plt.show()
-plt.xlim((0.,2.5))
-
-plt.plot(total_tension, Aporc, color = 'k')
-plt.xlabel("Total tension (N.m)")
-plt.ylabel("Smooth muscle activation (no units)")
-plt.title("Porcine coronary artery (D$_0$ =  num_plot $\mu$m)")
-plt.show()
-
-
-quit()
-
-
-########################################
-
-D0 = 150
-Cpass = 1.168*1000.
-Cpassdash = 7.24
-Cact = 1.108*1000.
-Cactdash = .843
-Cactdashdash = .406
-Cmyo = 7.479/1000.
-Cdashtone = -4.614
-fit_passive_params = [D0,Cpass,Cpassdash]
-fit_myo_params = [Cact, Cactdash, Cactdashdash, Cmyo, Cdashdashtone]
-fit_flow_params = [0.,0.,0.,0.]
-fixed_flow_params = [0.,0.,0.]
-active_diam_mes = np.zeros(num_plot)
-passive_diam_mes = np.zeros(num_plot)
-pressure = np.linspace(10,90,num_plot)*133./1000.
-for i in range(0,num_plot):
-    fit_myo_params = [Cact, Cactdash, Cactdashdash, Cmyo, Cdashdashtone]
-    active_diam_mes[i] = pg.diameter_from_pressure(fit_passive_params,fit_myo_params,fit_flow_params,fixed_flow_params,pressure[i],True)
-    fit_myo_params = [0.,0., 0.,0., 0.]
-    passive_diam_mes[i]=pg.diameter_from_pressure(fit_passive_params,fit_myo_params,fit_flow_params,fixed_flow_params,pressure[i],True)
-
-
-plt.ylim((0,250.))
-plt.xlim((0.,100.))
-plt.xlabel('Pressure (mmHg)')
-plt.ylabel('Inner diameter ($\mu$m)')
-plt.title("Rat Mesenteric Artery (D$_0$ = 150 $\mu$m)")
-plt.plot(np.linspace(10,90,num_plot),active_diam_mes,color = 'k', label = "Active model")
-plt.plot(np.linspace(10,90,num_plot),passive_diam_mes,color = 'k',linestyle = '--',label = "Passive model")
-plt.plot(np.linspace(10,90,num_plot),active_diam_preg,color = '#F01D7F', label = "Active model fit")
-plt.plot(np.linspace(10,90,num_plot),passive_diam_preg,color = '#F01D7F',linestyle = '--',label = "Passive model fit")
-plt.legend()
-plt.show()
-
-D0 = 100.8
-Cpass = 0.685*1000.
-Cpassdash = 12.61
-Cact = 1.131*1000.
-Cactdash = .910
-Cactdashdash = .343
-Cmyo =15.977/1000.
-Cdashtone = -4.180
-fit_passive_params = [D0,Cpass,Cpassdash]
-fit_myo_params = [Cact, Cactdash, Cactdashdash, Cmyo, Cdashdashtone]
-fit_flow_params = [0.,0.,0.,0.]
-fixed_flow_params = [0.,0.,0.]
-active_diam_mes = np.zeros(num_plot)
-passive_diam_mes = np.zeros(num_plot)
-pressure = np.linspace(10,90,num_plot)*133./1000.
-for i in range(0,num_plot):
-    fit_myo_params = [Cact, Cactdash, Cactdashdash, Cmyo, Cdashdashtone]
-    active_diam_mes[i] = pg.diameter_from_pressure(fit_passive_params,fit_myo_params,fit_flow_params,fixed_flow_params,pressure[i],True)
-    fit_myo_params = [0.,0., 0.,0., 0.]
-    passive_diam_mes[i]=pg.diameter_from_pressure(fit_passive_params,fit_myo_params,fit_flow_params,fixed_flow_params,pressure[i],True)
-
-
-plt.ylim((0,250.))
-plt.xlim((0.,100.))
-plt.xlabel('Pressure (mmHg)')
-plt.ylabel('Inner diameter ($\mu$m)')
-plt.title("Porcine coronary artery (D$_0$ =  num_plot $\mu$m)")
-plt.plot(np.linspace(10,90,num_plot),active_diam_mes,color = 'k', label = "Active model")
-plt.plot(np.linspace(10,90,num_plot),passive_diam_mes,color = 'k',linestyle = '--',label = "Passive model")
-plt.legend()
-plt.show()
-'''
