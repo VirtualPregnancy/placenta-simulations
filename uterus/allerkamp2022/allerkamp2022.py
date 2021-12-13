@@ -1,8 +1,6 @@
 import numpy as np
 import matplotlib
 from matplotlib import pyplot as plt
-from SALib.sample import saltelli
-from scipy.optimize import curve_fit, minimize,least_squares
 import os
 import placentagen as pg
 import csv
