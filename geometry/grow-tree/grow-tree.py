@@ -74,13 +74,14 @@ if(export_intermediates or export_results):
     if not os.path.exists(export_directory):
         os.makedirs(export_directory)
 
- 
 #Create seed points on the chorionic surface of the ellipsoid
-datapoints_chorion=pg.uniform_data_on_ellipsoid(n_chorion,volume,thickness,ellipticity,0)
+random_seed = 2 #seed for random number reproducability
+datapoints_chorion=pg.uniform_data_on_ellipsoid(n_chorion,volume,thickness,ellipticity,random_seed)
 if(export_intermediates):
     export_file = export_directory + '/chorion_data'
     pg.export_ex_coords(datapoints_chorion,'chorion', export_file,'exdata')
- 
+
+
 #Establish a seed geometry from which to grow, this needs to have at least two generations of branching and can be read in, or generated
 #from libraries.
 seed_geom=pg.umbilical_seed_geometry(volume,thickness,ellipticity,cord_insertion_x,cord_insertion_y,umb_artery_distance,umb_artery_length,datapoints_chorion)
@@ -92,7 +93,7 @@ if(export_intermediates):
  
 #Conduct an on surface branching algorithm that grows over the chorionic surface
 chorion_geom=pg.grow_chorionic_surface(angle_max, angle_min, fraction_chorion, min_length, point_limit,volume, thickness, ellipticity, datapoints_chorion, seed_geom,'surface')
- 
+
 if(export_intermediates):
     export_file = export_directory + '/chorion_geom'
     pg.export_ex_coords(chorion_geom['nodes'],'chorion',export_file,'exnode')
@@ -132,20 +133,14 @@ if(export_intermediates):
 
 
 #Now grow a tree to these data points, optimised for larger trees
-full_geom=pg.grow_large_tree(angle_max_ft, angle_min_ft, fraction_ft, min_length_ft, point_limit_ft, volume, thickness, ellipticity, datapoints_villi, chorion_and_stem)
-
-system = 'strahler'
-inlet_elem = 0
-inlet_radius = 2.0 #mm
-radius_ratio = 1.53
-radii = pg.define_radius_by_order(full_geom['nodes'], full_geom['elems'], system, inlet_elem, inlet_radius, radius_ratio)
+random_seed = 1
+full_geom=pg.grow_large_tree(angle_max_ft, angle_min_ft, fraction_ft, min_length_ft, point_limit_ft, volume, thickness, ellipticity, datapoints_villi, chorion_and_stem, random_seed)
 
 # Export the final results
 if(export_results or export_intermediates):
     export_file = export_directory + '/full_tree'
-    export_radii = export_directory + '/radii'
     pg.export_ex_coords(full_geom['nodes'],'placenta', export_file,'exnode')
     pg.export_exelem_1d(full_geom['elems'],'placenta', export_file)
-    pg.export_exfield_1d_linear(radii, 'placenta','radius', export_radii)
     export_file = export_directory + '/terminals'
     pg.export_ex_coords(full_geom['term_loc'],'villous',export_file,'exdata')
+
