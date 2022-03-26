@@ -5,8 +5,8 @@ import os
 from reprosim.diagnostics import set_diagnostics_level
 from reprosim.indices import perfusion_indices, get_ne_radius
 from reprosim.geometry import append_units,define_node_geometry, define_1d_elements,define_rad_from_geom,add_matching_mesh, \
-        calc_capillary_unit_length,define_rad_from_file,update_1d_elem_field
-from reprosim.exports import export_1d_elem_geometry, export_node_geometry, export_1d_elem_field,export_node_field,export_terminal_perfusion
+        define_capillary_model,define_rad_from_file,update_1d_elem_field
+from reprosim.repro_exports import export_1d_elem_geometry, export_node_geometry, export_1d_elem_field,export_node_field,export_terminal_perfusion
 from reprosim.pressure_resistance_flow import evaluate_prq, calculate_stats
 
 def main():
@@ -40,6 +40,7 @@ def main():
 
     #creates a mesh that converges (a venous mesh)
     umbilical_elem_option = 'single_umbilical_vein'
+    #umbilical_elem_option = 'same_as_arterial'
     if(Anastomosis):
         umbilical_elements = [1,2,3,4,5]
     else:
@@ -66,9 +67,10 @@ def main():
         ne_radius = get_ne_radius()
         update_1d_elem_field(ne_radius,anast_elem,anast_radius)
 
-    num_convolutes = 6  # number of terminal convolute connections
+    num_convolutes = 10  # number of terminal convolute connections
     num_generations = 3  # number of generations of symmetric intermediate villous trees
-    calc_capillary_unit_length(num_convolutes,num_generations)
+    num_parallel = 6 # number of capillaries per convolute
+    define_capillary_model(num_convolutes,num_generations,num_parallel,'byrne_simplified')
 
     #Call solve
     bc_type = 'flow' # 'pressure' or 'flow'
@@ -82,14 +84,16 @@ def main():
         outlet_pressure = 2660
         inlet_flow = 4166.7/2.0 # mm3/s
 
+    rheology_type = 'constant_visc'
+    vessel_type = 'rigid'
 
-    evaluate_prq(mesh_type,bc_type,inlet_flow,inlet_pressure,outlet_pressure)
+    evaluate_prq(mesh_type, bc_type, rheology_type, vessel_type, inlet_flow, inlet_pressure, outlet_pressure)
 
     # this parameter is used to calculate the volume of vessels in the reconstructed tree that can't be
     # resolved in the images
     # set to 0 if not using
     image_voxel_size = 0
-    calculate_stats(export_directory + '/terminal_flow_per_generation.csv', image_voxel_size)
+    calculate_stats(export_directory + '/terminal flow per generation.csv', image_voxel_size,1)
 
     ##export geometry
     group_name = 'perf_model'
@@ -105,8 +109,9 @@ def main():
     field_name = 'flow'
     export_1d_elem_field(7,export_directory + '/flow_perf.exelem', group_name, field_name)
     #export node field for pressure
+    filename='Output/pressure_perf.exnode'
     field_name = 'pressure_perf'
-    export_node_field(1, export_directory + '/pressure_perf.exnode', group_name, field_name)
+    export_node_field(1, export_directory + '/pressue_perf.exnode', group_name, field_name)
     #
     # Export terminal solution
     export_terminal_perfusion(export_directory + '/terminal.exnode', 'terminal_soln')
