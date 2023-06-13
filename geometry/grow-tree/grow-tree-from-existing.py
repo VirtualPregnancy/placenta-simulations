@@ -3,7 +3,7 @@ import os
 import placentagen as pg
 import numpy as np
 
-from get_stats import *
+#from get_stats import *
 from os.path import expanduser
 
 home = expanduser("~")
@@ -47,16 +47,11 @@ export_intermediates = True
 export_results = True
 #Define a directory to export (do not write over expected-results unless you have made a (peer-reviewed) change to the process)
 
-#export_directory = home + '/placenta_patient_49/growing/uniform'
-export_directory = home + '/placenta_patient_49/growing/het_27k'
-chor_node_in_file = home + '/placenta_patient_49/clean_tree/p49_large_vessels_step21_v2.exnode'
-chor_elem_in_file = home + '/placenta_patient_49/clean_tree/p49_large_vessels_step21.exelem'
-#export_directory = home + '/placenta_patient_51/test'
-#chor_node_in_file = home + '/placenta_patient_51/grow_tree/chor_nodes_cycle3_v6.exnode'
-#chor_elem_in_file = home + '/placenta_patient_51/grow_tree/chor_elems_cycle3_v5.exelem'
+export_directory = 'output-grow-existing'
+chor_node_in_file = 'example-data-files/chor_nodes.exnode'
+chor_elem_in_file = 'example-data-files/chor_elems.exelem'
 
-#seed_points_in_file = home + '/placenta_patient_49/seed_points/p49_seed_points_uniform_10_step_9_final.exdata' #uniform distribution
-seed_points_in_file = home + '/placenta_patient_49/seed_points/p49_seed_points_heterogeneous_7_12_18_final.exdata'
+seed_points_in_file = 'example-data-files/placenta_seeds_transformed.exdata'
 
 seed_points_option = 'read_in' #or 'generate'
 
@@ -71,8 +66,6 @@ chorion_and_stem = {}
 chorion_and_stem['nodes'] = pg.import_exnode_tree(chor_node_in_file)['nodes'][:, 0:4]
 chorion_and_stem['elems'] = pg.import_exelem_tree(chor_elem_in_file)['elems']
 
-#df1 = pd.DataFrame(np.array(chorion_and_stem['nodes']).reshape(len(chorion_and_stem['nodes']),4))
-#df1.to_csv('chorion_and_stem.csv')
 
 #populate element connectivity
 elem_connectivity = pg.element_connectivity_1D(chorion_and_stem['nodes'],chorion_and_stem['elems'])
@@ -90,8 +83,9 @@ if(export_intermediates):
     export_file = export_directory + '/villous_data'
     pg.export_ex_coords(datapoints_villi,'villous',export_file,'exdata')
 
+random_seed = 2 #random seed number for reproducability
 #Now grow a tree to these data points, optimised for larger trees
-full_geom=pg.grow_large_tree(angle_max_ft, angle_min_ft, fraction_ft, min_length_ft, point_limit_ft, volume, thickness, ellipticity, datapoints_villi, chorion_and_stem)
+full_geom=pg.grow_large_tree(angle_max_ft, angle_min_ft, fraction_ft, min_length_ft, point_limit_ft, volume, thickness, ellipticity, datapoints_villi, chorion_and_stem,random_seed)
 
 # Export the final results
 if(export_results or export_intermediates):
@@ -101,4 +95,4 @@ if(export_results or export_intermediates):
     export_file = export_directory + '/terminals'
     pg.export_ex_coords(full_geom['term_loc'],'villous',export_file,'exdata')
 
-get_tree_stats(export_directory)
+#`get_tree_stats(export_directory)
