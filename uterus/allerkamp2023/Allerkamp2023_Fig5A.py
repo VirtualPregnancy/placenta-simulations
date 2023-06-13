@@ -107,8 +107,8 @@ plt.plot(default_radial_radius,radial_shear_noplug*10,'ok', mew=2, ms=8, label='
 plt.xlabel('Radial artery radius (mm)')
 plt.ylabel('Radial artery shear stress (dyn/$\mathregular{cm^{2}}$)')
 plt.legend()
-print("Radial artery shear stress PLUGGED: " +  str(radial_shear) + " Pa")
-print("Radial artery shear stress UNPLUGGED: " +  str(radial_shear_noplug) + " Pa")
+print("Radial artery shear stress PLUGGED: " +  str(radial_shear) + " Pa, " + str(radial_shear*10) + " dyne/cm2")
+print("Radial artery shear stress UNPLUGGED: " +  str(radial_shear_noplug) + " Pa, " + str(radial_shear_noplug*10) + " dyne/cm2")
 
 #export plot
 plt.savefig(export_directory + '/Allerkamp2023_Fig5A.png')

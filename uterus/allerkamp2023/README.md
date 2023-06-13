@@ -3,6 +3,8 @@ Allerkamp 2023
 
 This repository contains code that reproduces Figure 5 of Allerkamp et al. (full citation to be added when published).
 
+Figure 5 contains all computational modelling results in this study.
+
 Requirements
 ------------
 
