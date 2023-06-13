@@ -111,5 +111,5 @@ print("Radial artery shear stress PLUGGED: " +  str(radial_shear) + " Pa")
 print("Radial artery shear stress UNPLUGGED: " +  str(radial_shear_noplug) + " Pa")
 
 #export plot
-plt.savefig(export_directory + 'Allerkamp2023_Fig5A.png')
+plt.savefig(export_directory + '/Allerkamp2023_Fig5A.png')
 plt.show()
