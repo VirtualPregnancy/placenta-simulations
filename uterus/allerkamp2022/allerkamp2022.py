@@ -145,7 +145,7 @@ def main():
     ###############################################
     #Plot passive results against experimental data
     ###############################################
-
+    plt.rcParams["font.size"] = "12"
     plt.errorbar(expt_pressure, passive_diameter_preg, passive_se_preg, marker='s', ls='--', color='#F01D7F',
                  label="Experimental data (pregnant)", capsize=5.)
     plt.errorbar(expt_pressure, passive_diameter, passive_se, marker='o', ls='--', color='.5',
@@ -157,6 +157,7 @@ def main():
     plt.xlabel('Pressure (mmHg)')
     plt.ylabel('Inner diameter ($\mu$m)')
     plt.legend()
+    plt.xticks([10.,30.,50.,70.,90])
     plt.savefig(export_directory + '/PassiveFitsNonNormalised.png')
     plt.close()
 
@@ -171,6 +172,7 @@ def main():
     plt.plot(np.linspace(10, 90, num_plot), new_passive_d / passive_diameter[0], '0.5', label="Model fit (non-pregnant)")
     plt.xlabel('Pressure (mmHg)')
     plt.ylabel('Inner diameter / Diameter at 10mmHg')
+    plt.xticks([10.,30.,50.,70.,90])
     plt.legend()
     plt.savefig(export_directory + '/PassiveFitsNormalisedTo10mmHg.png')
     plt.close()
@@ -191,6 +193,7 @@ def main():
     plt.xlabel('Pressure (mmHg)')
     plt.ylabel('Inner diameter ($\mu$m)')
     plt.legend()
+    plt.xticks([10.,30.,50.,70.,90])
     plt.savefig(export_directory + '/ExperimentalDataActiveNoFlow.png')
     plt.close()
 
@@ -208,7 +211,7 @@ def main():
                  label="Experimental data (pregnant)", capsize=5.)
     plt.errorbar(expt_pressure, active_diameter, active_se, marker='o', ls=':', color='0.5',
                  label="Experimental data (non-pregnant)", capsize=5.)
-
+    plt.xticks([10.,30.,50.,70.,90])
     plt.savefig(export_directory + '/ActiveNoFlowFits.png')
     plt.close()
 
