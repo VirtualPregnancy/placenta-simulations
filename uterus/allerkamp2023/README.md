@@ -11,7 +11,7 @@ You will need python >3 (tested with version 3.9), with the following packages i
 - numpy
 - matplotlib
 - placentagen (https://github.com/virtualpregnancy/placentagen)
-
+- os (to create an output directory that contains your images)
 
 Running
 -------

@@ -1,8 +1,12 @@
 import numpy as np
 from matplotlib import pyplot as plt
 import placentagen as pg
+import os
 
-
+## Create a directory to output figures
+export_directory = 'output'
+if not os.path.exists(export_directory):
+    os.makedirs(export_directory)
 ###6-8 weeks normal###
 
 # Definition of geometry
@@ -107,5 +111,5 @@ print("Radial artery shear stress PLUGGED: " +  str(radial_shear) + " Pa")
 print("Radial artery shear stress UNPLUGGED: " +  str(radial_shear_noplug) + " Pa")
 
 #export plot
-plt.savefig('Allerkamp2023_Fig5A.png')
+plt.savefig(export_directory + 'Allerkamp2023_Fig5A.png')
 plt.show()
