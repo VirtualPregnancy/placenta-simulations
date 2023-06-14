@@ -1,8 +1,12 @@
-
 import numpy as np
 from matplotlib import pyplot as plt
 import placentagen as pg
+import os
 
+## Create a directory to output figures
+export_directory = 'output'
+if not os.path.exists(export_directory):
+    os.makedirs(export_directory)
 
 ###16-20 weeks, scenario B normal###
 
@@ -25,7 +29,11 @@ vessels_noplug = np.array([(1, 1, 1.4, 100.0,'Uterine'),(2, 2, 0.403, 9.0,'Arcua
 
 # spirals and IVS are defined by  resistance (Pa.s/mm^3) and compliance (/Pa) [R|C|0=off 1=on]
 # To remove these from the model (eg post partum) set third parameter to be zero, otherwise set as 1
-terminals = np.array([1.3,1e-8,1,25.8])
+# spirals and IVS are defined by  resistance (Pa.s/mm^3) and number of units
+myometrial_resistance = 25.8 #Pa.s/mm3
+IVS_resistance = 1.3 #Pa.s/mm3=
+IVS_num = 1.
+terminals = np.array([IVS_resistance,IVS_num,myometrial_resistance])
 
 # Blood viscosity (Pa.s)
 mu = 3.4e-3
@@ -39,8 +47,6 @@ StaticPressure = 84. * 133.
 SteadyFlow=39.5 #ml/min
 boundary_conds = np.array([('flow',StaticPressure,SteadyFlow)],dtype=[('bc_type', 'U12'),('inlet_p','f8'),('inlet_q','f8')])
 
-#StaticPressureOut = 4.0*133 #Outlet pressure (uterine veins)
-#boundary_conds = np.array([('pressure',StaticPressure,StaticPressureOut)],dtype=[('bc_type', 'U12'),('inlet_p','f8'),('outlet_p','f8')])
 
 for i in range(0, np.size(vessels)):
     if (vessels['vessel_type'][i] == 'Anastomose'):
@@ -50,9 +56,6 @@ for i in range(0, np.size(vessels)):
     elif (vessels['vessel_type'][i] == 'Spiral_tube'):
         spiral_index = i
 
-
-## Calculate total resistance of the system and compare to baseline (flow decreases by this factor as resistance increases assuming a constant driving pressure)
-## Calculate total resistance of the system and compare to baseline (flow decreases by this factor as resistance increases assuming a constant driving pressure)
 
 ## Calculate total resistance of the system and compare to baseline (flow decreases by this factor as resistance increases assuming a constant driving pressure)
 num_assess = 10
@@ -65,12 +68,27 @@ for k in range(0, num_assess):
     vessels_noplug['radius'][radial_index] = radius[k]
     print("setting radial radius" + str(vessels['radius'][radial_index]))  # 0=uterine, 1=arcuate,2=radial
     [TotalResistance, VenousResistance, shear,resistance,flow,pressure_out] = pg.human_total_resistance(mu,dp,porosity,vessels, terminals,boundary_conds,channel_rad)
-    radial_shear[k] = shear[radial_index] #Pa
+    radial_shear[k] = shear[radial_index]*10 #dyn/cm^2
     [TotalResistance, VenousResistance, shear,resistance,flow,pressure_out] = pg.human_total_resistance(mu,dp,porosity,vessels_noplug, terminals,boundary_conds,channel_rad)
-    radial_shear_noplug[k] = shear[radial_index] #Pa
+    radial_shear_noplug[k] = shear[radial_index]*10 #dyn/cm^2
 
-plt.plot(radius, radial_shear,label='Plugged')
-plt.plot(radius, radial_shear_noplug,label='Not Plugged')
+    # Set the default text font size
+    plt.rc('font', size=16)
+    # Set the axes title font size
+    plt.rc('axes', titlesize=12)
+    # Set the axes labels font size
+    plt.rc('axes', labelsize=14)
+    # Set the font size for x tick labels
+    plt.rc('xtick', labelsize=14)
+    # Set the font size for y tick labels
+    plt.rc('ytick', labelsize=14)
+    # Set the legend font size
+    plt.rc('legend', fontsize=14)
+    # Set the font size of the figure title
+    plt.rc('figure', titlesize=20)
+
+plt.plot(radius, radial_shear, color="black", label='Plugged')
+plt.plot(radius, radial_shear_noplug, color="black", linestyle='dashed', label='Not Plugged')
 
 vessels['radius'][radial_index] = default_radial_radius
 [TotalResistance, VenousResistance, shear,resistance,flow,pressure_out] = pg.human_total_resistance(mu,dp,porosity,vessels, terminals,boundary_conds,channel_rad)
@@ -80,14 +98,16 @@ vessels_noplug['radius'][radial_index] = default_radial_radius
 [TotalResistance, VenousResistance, shear,resistance,flow,pressure_out] = pg.human_total_resistance(mu,dp,porosity,vessels_noplug, terminals,boundary_conds,channel_rad)
 radial_shear_noplug= shear[radial_index]
 
-plt.plot(default_radial_radius,radial_shear,'+k',label='Default radius plugged')
-plt.plot(default_radial_radius,radial_shear_noplug,'+r',label='Default radius not plugged')
+plt.plot(default_radial_radius,radial_shear*10,'+k', mew=2, ms=15, label='Physiol. radius plugged')
+plt.plot(default_radial_radius,radial_shear_noplug*10,'ok', mew=2, ms=8, label='Physiol. radius not plugged')
 
 plt.xlabel('Radial artery radius (mm)')
-plt.ylabel('Radial artery shear stress (Pa)')
-plt.title('Radial artery radius vs shear stress')
+plt.ylabel('Radial artery shear stress (dyn/$\mathregular{cm^{2}}$)')
 plt.legend()
 print("Radial artery shear stress PLUGGED: " +  str(radial_shear) + " Pa")
 print("Radial artery shear stress UNPLUGGED: " +  str(radial_shear_noplug) + " Pa")
-plt.show()
 
+#export plot
+plt.savefig(export_directory + '/Allerkamp2023_Fig5C.png')
+
+plt.show()

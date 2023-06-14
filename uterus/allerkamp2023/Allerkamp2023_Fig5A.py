@@ -15,13 +15,13 @@ if not os.path.exists(export_directory):
 # Spiral artery geometry, tube part 1 JZ spiral artery, tube part 2 decidual spiral, plug
 num_radial = 50
 default_radial_radius = 0.112
-vessels = np.array([(1, 1, 0.95, 100.0,'Uterine'),(2, 2, 0.249, 9.0,'Arcuate'),(3, num_radial, 0.112, 6.0,'Radial'),(4, num_radial, 0.032, 6.5,'Anastomose'),
+vessels = np.array([(1, 1, 0.95, 100.0,'Uterine'),(2, 2, 0.249, 9.0,'Arcuate'),(3, num_radial, default_radial_radius, 6.0,'Radial'),(4, num_radial, 0.032, 6.5,'Anastomose'),
           (5, num_radial, 0.036, 7, 'Spiral_tube'),
           (6, num_radial, 0.123, 1.7, 'Spiral_funnel'),(7, num_radial, 0.123, 1.3, 'Spiral_plug')],
                    dtype=[('generation', 'i4'), ('number', 'i4'), ('radius', 'f8'), ('length', 'f8'),
                           ('vessel_type', 'U15')])
                           
-vessels_noplug = np.array([(1, 1, 0.95, 100.0,'Uterine'),(2, 2, 0.249, 9.0,'Arcuate'),(3, num_radial, 0.112, 6.0,'Radial'),(4, num_radial, 0.032, 6.5,'Anastomose'),
+vessels_noplug = np.array([(1, 1, 0.95, 100.0,'Uterine'),(2, 2, 0.249, 9.0,'Arcuate'),(3, num_radial, default_radial_radius, 6.0,'Radial'),(4, num_radial, 0.032, 6.5,'Anastomose'),
           (5, num_radial, 0.036, 7, 'Spiral_tube'),
           (6, num_radial, 0.123, 3.0, 'Spiral_funnel')],
                    dtype=[('generation', 'i4'), ('number', 'i4'), ('radius', 'f8'), ('length', 'f8'),

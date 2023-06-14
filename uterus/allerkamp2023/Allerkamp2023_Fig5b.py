@@ -49,8 +49,6 @@ StaticPressure = 82. * 133.
 SteadyFlow=27.2 #ml/min
 boundary_conds = np.array([('flow',StaticPressure,SteadyFlow)],dtype=[('bc_type', 'U12'),('inlet_p','f8'),('inlet_q','f8')])
 
-#StaticPressureOut = 10.0*133 #Outlet pressure (uterine veins)
-#boundary_conds = np.array([('pressure',StaticPressure,StaticPressureOut)],dtype=[('bc_type', 'U12'),('inlet_p','f8'),('outlet_p','f8')])
 
 for i in range(0, np.size(vessels)):
     if (vessels['vessel_type'][i] == 'Anastomose'):
@@ -63,7 +61,6 @@ for i in range(0, np.size(vessels)):
 
 ## Calculate total resistance of the system and compare to baseline (flow decreases by this factor as resistance increases assuming a constant driving pressure)
 
-## Calculate total resistance of the system and compare to baseline (flow decreases by this factor as resistance increases assuming a constant driving pressure)
 num_assess = 10
 radius = np.linspace(0.1, 0.2, num_assess)
 radial_shear = np.zeros(len(radius))
