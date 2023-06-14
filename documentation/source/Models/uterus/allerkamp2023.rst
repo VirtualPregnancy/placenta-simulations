@@ -1,6 +1,6 @@
-=======================================
-Example 1 - Model from Allerkamp et al.
-=======================================
+=================================
+Example 1 - Allerkamp et al. 2023
+=================================
 
 This example is found in the directory placenta-simulations/uterus/allerkamp2022
 

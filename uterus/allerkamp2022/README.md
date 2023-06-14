@@ -1,4 +1,4 @@
-Allerkamp 2023 
+Allerkamp 2022 
 --------------
 
 This repository contains code that reproduces  Allerkamp et al. (https://doi.org/10.1152/ajpheart.00693.2021)
@@ -27,7 +27,6 @@ Simply run the python code in alllerkamp2022.py, and the figures will be written
 
 
 
-For more information on how this code works, please see the documentation for this repository 
-at https://placenta-simulator.readthedocs.io/en/latest/
-
+For more information on how this code works, please see the documentation for this model
+at https://placenta-simulator.readthedocs.io/en/latest/Models/uterus/singlevessel_index.html
 
