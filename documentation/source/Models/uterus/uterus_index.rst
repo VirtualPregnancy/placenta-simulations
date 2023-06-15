@@ -8,3 +8,4 @@ This set of examples demonstrates the steps toward simulating function in the ut
     :maxdepth: 1
 
     singlevessel_index
+    staticuterus_index

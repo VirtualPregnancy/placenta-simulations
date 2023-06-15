@@ -8,5 +8,5 @@ This set of examples demonstrates the steps toward solving models of uterine ves
     :maxdepth: 1
 
     staticflowtheory
-    model1
+    allerkamp2023
 
