@@ -42,7 +42,7 @@ SteadyFlow=24.2 #ml/min
 
 myometrial_resistance = 25.8 #Pa.s/mm3
 
-# spirals and IVS are defined by  resistance (Pa.s/mm^3) and number of units
+#  myometrium and  IVS are defined by  resistance (Pa.s/mm^3) and number (typically 1)
 IVS_resistance = 1.3#Pa.s/mm3
 IVS_num = 1.
 terminals = np.array([IVS_resistance,IVS_num,myometrial_resistance])

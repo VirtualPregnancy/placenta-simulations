@@ -31,8 +31,7 @@ vessels_noplug = np.array([(1, 1, 1.18, 100.0,'Uterine'),(2, 2, 0.32, 9.0,'Arcua
                    dtype=[('generation', 'i4'), ('number', 'i4'), ('radius', 'f8'), ('length', 'f8'),
                           ('vessel_type', 'U15')])
 
-# spirals and IVS are defined by  resistance (Pa.s/mm^3) and number of units
-myometrial_resistance = 25.8 #Pa.s/mm3
+#  myometrium and  IVS are defined by  resistance (Pa.s/mm^3) and number (typically 1)myometrial_resistance = 25.8 #Pa.s/mm3
 IVS_resistance = 1.3 #Pa.s/mm3=
 IVS_num = 1.
 terminals = np.array([IVS_resistance,IVS_num,myometrial_resistance])
