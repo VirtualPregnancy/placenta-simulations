@@ -6,7 +6,7 @@ Publications containing detailed descriptions of the theory employed in this mod
 
  - `Carlson and Secombe Micro-circulation, 2005 <https://www.tandfonline.com/doi/abs/10.1080/10739680590934745>`_.
  - `Carlson et al. Am J Physiol - Heart Circ Physiol, 2008 <https://journals.physiology.org/doi/full/10.1152/ajpheart.00262.2008>`_.
- - `Allerkamp et al. In preparation <No url>`_.
+ - `Allerkamp et al. Am J Physiol - Heart Circ Physiol, 2022 <https://doi.org/10.1152/ajpheart.00693.2021>`_.
 
 Please remember to cite these papers if using these models.
 
