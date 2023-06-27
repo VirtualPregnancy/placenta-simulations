@@ -20,5 +20,5 @@ Running
 For each panel in Figure 5, you simply need to run the python file associated with that panel.
 
 For more information on how this code works, please see the documentation for this repository 
-at https://placenta-simulator.readthedocs.io/en/latest/
+at https://placenta-simulator.readthedocs.io/en/latest/Models/uterus/staticuterus_index.html
 
