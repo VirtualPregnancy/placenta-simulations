@@ -1,6 +1,9 @@
 import numpy as np
+
 import matplotlib
+matplotlib.use('Cairo')
 from matplotlib import pyplot as plt
+
 import os
 import placentagen as pg
 import csv
@@ -53,7 +56,6 @@ def main():
     rows = []
     for row in active_data:
         rows.append(row)
-    print(rows)
     file.close()
 
     Cact = float(rows[0][0])
@@ -158,7 +160,7 @@ def main():
     plt.ylabel('Inner diameter ($\mu$m)')
     plt.legend()
     plt.xticks([10.,30.,50.,70.,90])
-    plt.savefig(export_directory + '/PassiveFitsNonNormalised.png')
+    plt.savefig(export_directory + '/PassiveFitsNonNormalised.svg',format='svg',dpi=300)
     plt.close()
 
     plt.errorbar(expt_pressure, passive_diameter_preg / passive_diameter_preg[0], passive_se_preg / passive_diameter_preg[0],
@@ -174,7 +176,7 @@ def main():
     plt.ylabel('Inner diameter / Diameter at 10mmHg')
     plt.xticks([10.,30.,50.,70.,90])
     plt.legend()
-    plt.savefig(export_directory + '/PassiveFitsNormalisedTo10mmHg.png')
+    plt.savefig(export_directory + '/PassiveFitsNormalisedTo10mmHg.svg',format='svg',dpi=300)
     plt.close()
 
     ##################################################################
@@ -194,7 +196,7 @@ def main():
     plt.ylabel('Inner diameter ($\mu$m)')
     plt.legend()
     plt.xticks([10.,30.,50.,70.,90])
-    plt.savefig(export_directory + '/ExperimentalDataActiveNoFlow.png')
+    plt.savefig(export_directory + '/ExperimentalDataActiveNoFlow.svg',format='svg',dpi=300)
     plt.close()
 
     plt.ylim((0, 250.))
@@ -212,7 +214,7 @@ def main():
     plt.errorbar(expt_pressure, active_diameter, active_se, marker='o', ls=':', color='0.5',
                  label="Experimental data (non-pregnant)", capsize=5.)
     plt.xticks([10.,30.,50.,70.,90])
-    plt.savefig(export_directory + '/ActiveNoFlowFits.png')
+    plt.savefig(export_directory + '/ActiveNoFlowFits.svg',format='svg',dpi=300)
     plt.close()
 
 
@@ -230,7 +232,7 @@ def main():
     plt.xlabel('D$_0$ ($\mu$m)', fontsize=16)
     plt.ylabel('C$_{pass}$ (N/m)', fontsize=16)
     plt.legend()
-    plt.savefig(export_directory + '/CpassComparison.png')
+    plt.savefig(export_directory + '/CpassComparison.svg',format='svg',dpi=300)
     plt.close()
     ##########################################################
     #Plot Cpass Comparisons
@@ -247,7 +249,7 @@ def main():
     plt.xlabel('D$_0$ ($\mu$m)', fontsize=16)
     plt.ylabel('C$^{,}_{pass}$', fontsize=16)
     plt.legend()
-    plt.savefig(export_directory + '/CpassdashComparison.png')
+    plt.savefig(export_directory + '/CpassdashComparison.svg',format='svg',dpi=300)
     plt.close()
 
     ###########################################################
@@ -265,7 +267,7 @@ def main():
     plt.xlabel('D$_0$ ($\mu$m)',fontsize=16)
     plt.ylabel('C$_{myo}$',fontsize=16)
     plt.legend()
-    plt.savefig(export_directory + '/CmyoComparison.png')
+    plt.savefig(export_directory + '/CmyoComparison.svg',format='svg',dpi=300)
     plt.close()
 
     ##################################################################
@@ -281,7 +283,7 @@ def main():
     plt.ylabel('C$_{act}$', fontsize=16)
     plt.annotate("", xy=(0.985*D0_preg,1.025*Cact_preg/1000.), xytext=(D0, Cact/1000.), arrowprops=dict(headwidth=5, headlength=5, width=0.1,color='#F01D7F'))
     matplotlib.pyplot.text(50., 1.2, "R=0.60", fontsize=12)
-    plt.savefig(export_directory + '/CactComparison.png')
+    plt.savefig(export_directory + '/CactComparison.svg',format='svg',dpi=300)
     plt.close()
 
     ##############################################
@@ -334,7 +336,7 @@ def main():
     plt.xlabel("Pressure (mmHg)")
     plt.ylabel("Diameter ($\mu$m)")
     plt.legend()
-    plt.savefig(export_directory + '/FlowImpactNonPregnant.png')
+    plt.savefig(export_directory + '/FlowImpactNonPregnant.svg',format='svg',dpi=300)
     plt.close()
 
     blood_pressure = np.linspace(10., 90., 100)
@@ -370,7 +372,6 @@ def main():
         fixed_flow_params_solve = [fixed_flow_params[0], fixed_flow_params[1], 0., fixed_flow_params[2], 0]
         flow_active[i] = pg.diameter_from_pressure(fit_passive_params, fit_myo_params, flow_params,
                                                    fixed_flow_params_solve, pressure, False)
-
     plt.ylim([50., 160])
     plt.plot(blood_pressure, flow_passive, color='#F01D7F', ls=':', label="Passive model")
     plt.plot(blood_pressure, flow_active, color='#F01D7F', ls='--', label="Active model, flow 0 $\mu$l/min")
@@ -379,8 +380,9 @@ def main():
     plt.xlabel("Pressure (mmHg)")
     plt.ylabel("Diameter ($\mu$m)")
     plt.legend()
-    plt.savefig(export_directory + '/FlowImpactPregnant.png')
+    plt.savefig(export_directory + '/FlowImpactPregnant.svg',format='svg',dpi=300)
     plt.close()
+    
 
 if __name__ == '__main__':
     main()
