@@ -30,10 +30,10 @@ Past group members
 ''''''''''''''''''
 **Postdocs:** Hanna Allerkamp (2019-2021)
 
-**PhD Students:** Mabelle Lin (2017), Rojan Saghian (2018), Win Min Tun (2019), Izza Ismail (2019)
+**PhD Students:** Mabelle Lin (2017), Rojan Saghian (2018), Win Min Tun (2019), Izza Ismail (2020)
 
-**Masters students:** Monika Byrne (2019), Ali Moulvi (2019), Jonathan Reshef (2020), Leio Veeboy (2020),
-Tegan Pole (2020), Stephanie Leighton (2022)
+**Masters students:** Monika Byrne (2019), Ali Moulvi (2020),  Leio Veeboy (2020),
+Teagan Pole (2020), Jonathan Reshef (2021), Stephanie Leighton (2022)
 
 **Research Assistants:** Manvi Madan, Sophie Shamilov, Amanda Chow
 

@@ -22,7 +22,12 @@ in around 2012.
    :maxdepth: 2
 
    TheGroup/whoarewe
+   TheGroup/publications
 
+Since establishment of the group we have been grateful to receive funding from a number of sources to create the virtual pregnancy.
+These funding sources include The Royal Society of New Zealand Te Aparangi via the Marsden Fund, the Catalyst Fund,
+and the Rutherford Discovery Fellowship programme, the Wellcome Leap In Utero Program, The Health Research Council of New Zealand Consolidator Fund, The Gravida Centre of Research Excellence,
+The Aotearoa Foundation, The Faculty of Health and Medical Sciences (University of Auckland), and Auckland Bioengineering Institute (University of Auckland).
 
 Examples of our Computational Models
 ------------------------------------
