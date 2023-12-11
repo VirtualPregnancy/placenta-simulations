@@ -253,19 +253,28 @@ latex_elements = {
      # 'pointsize': '10pt',
 
      # Additional stuff for the LaTeX preamble.
-     #
-     # 'preamble': '',
 
+
+     #
+     'preamble': '\setcounter{secnumdepth}{3} \setcounter{tocdepth}{3}'
      # Latex figure (float) alignment
      #
      # 'figure_align': 'htbp',
 }
+#latex_preamble = r"""
+#% ...
+
+#\setcounter{tocdepth}{5}
+#\setcounter{secnumdepth}{5}
+
+#% ...
+#"""
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'ReproExamples.tex', u'Repro Examples Documentation',
+    (master_doc, 'ReproExamples.tex', u'Placenta Simulations Documentation',
      u'Alys Clark', 'manual'),
 ]
 

@@ -139,10 +139,6 @@ full_geom=pg.grow_large_tree(angle_max_ft, angle_min_ft, fraction_ft, min_length
 colour = np.ones(len(full_geom['elems']))
 radii = np.ones(len(full_geom['elems']))*0.1
 
-print(np.max(full_geom['nodes'][:,1]),np.max(full_geom['nodes'][:,2]),np.max(full_geom['nodes'][:,3]))
-
-pg.plot_vasculature_3d(full_geom['nodes'][:,1:4], full_geom['elems'], colour, radii,0,0,0)
-
 # Export the final results
 if(export_results or export_intermediates):
     export_file = export_directory + '/full_tree'

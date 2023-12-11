@@ -82,19 +82,10 @@ def compare_perfusion_byrne2020():
     check_true = np.isclose(nodes_output[:,:],nodes_expected[:,:]).all()
     return check_true
 
-#def compare_ventilation_swan2011():#
+def compare_ellipsoid_tree_grow():
 
-#    #read in the terminal .exnode file
-#    nodes_output = read_exnode('../ventilation_Swan2011/output/P2BRP268-H12816_terminal.exnode')
-#    nodes_expected = read_exnode('../ventilation_Swan2011/expected_results/P2BRP268-H12816_terminal.exnode')
-#   check_true = np.isclose(nodes_output[:,:],nodes_expected[:,:]).all()
-#    return check_true
-
-#def compare_wave_clark2018():
-
-#    #read in the terminal .exnode file
-#    inputimp_output = read_txt('../wave_transmission_Clark2018/output/inputimpedance.txt')
-#    inputimp_expected = read_txt('../wave_transmission_Clark2018/output/inputimpedance.txt')
-#    check_true = np.isclose(inputimp_output,inputimp_expected).all()
-#    return check_true
-
+    #read in the terminal .exnode file
+    nodes_output = read_exnode('../geometry/grow-tree/output/terminals.exdata')
+    nodes_expected = read_exnode('../geometry/grow-tree/expected-results/terminals.exdata')
+    check_true = np.isclose(nodes_output[:,:],nodes_expected[:,:]).all()
+    return check_true

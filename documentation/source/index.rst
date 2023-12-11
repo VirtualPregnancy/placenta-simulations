@@ -6,15 +6,10 @@
 Welcome to our 'Virtual Pregnancy'
 ==================================
 
-Welcome to the Pregnancy Modelling team at Auckland Bioengineering Institute ('The  ABI Placenta
-Group').
+Welcome to the Pregnancy Modelling team at Auckland Bioengineering Institute, University of Auckland.
 
-About our Group
----------------
-
-The `Pregnancy Modelling Group` is a research group focusing developing computational models that contribute to a `Virtual
-Pregnancy`.
-It was established by Dr Alys Clark (Auckland Bioengineering Institute, University of Auckland) and Dr Joanna James
+We are a research group that focuses on developing computational models that contribute to a `Virtual
+Pregnancy`. Our group was established by Dr Alys Clark (Auckland Bioengineering Institute, University of Auckland) and Dr Joanna James
 (Faculty of Medical and Health Sciences, University of Auckland)
 in around 2012.
 
@@ -29,26 +24,22 @@ These funding sources include The Royal Society of New Zealand Te Aparangi via t
 and the Rutherford Discovery Fellowship programme, the Wellcome Leap In Utero Program, The Health Research Council of New Zealand Consolidator Fund, The Gravida Centre of Research Excellence,
 The Aotearoa Foundation, The Faculty of Health and Medical Sciences (University of Auckland), and Auckland Bioengineering Institute (University of Auckland).
 
-Examples of our Computational Models
-------------------------------------
-
-We use three main libraries to develop our and run our models, although some examples will include other libraries
-and softwares (preferably open-source):
+We use two main in house libraries to develop our and run our models. We also use a number of other (open-source)
+libraries and software to do our work, that we do not develop. Where we use these other softwares for a process we
+encourage working through training and documentation for that particular software:
 
 	1. The placentagen libraries, found `at this link <https://github.com/VirtualPregnancy/placentagen.git>`_.
 	2. The reprosim libraries, found `at this link <https://github.com/VirtualPregnancy/reprosim.git>`_.
-	3. The OpenCMISS libraries, found `at this link <hhttp://opencmiss.org/>`_.
 
-This set of examples focuses on formulating the steps toward creating and solving models of placental and utero-placental structure and function. The set of examples will grow as our capabilities expand.
-
-Models that are currently available:
+You don't need to install all the software straight away, and each example you work through will indicate what software
+is needed prior to use.
 
 .. toctree::
    :maxdepth: 2
-   
+
    Models/geometry/geometry_index
+   Models/uteroplacental/utero_index
    Models/fetoplacental/feto_index
-   Models/uterus/uterus_index
 
 
 .. Indices and tables
