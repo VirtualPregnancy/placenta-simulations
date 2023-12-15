@@ -30,16 +30,16 @@ the code 1) which element your anastomosis is, and 2) its radius. In the code, t
      anast_radius = 1.0
 
 You will see further down the code, that this logical tells the code to read in the appropriate .ipelem file, and
-that an optional argument to the define_1d_elements function in reprosim then tells that codebase whether to include
+that an optional argument to the define_1d_element_placenta function in reprosim then tells that codebase whether to include
 an anastomosis or not.
 
 .. code-block:: python
 
      if(Anastomosis):
-         define_1d_elements('sample_geometry/FullTree.ipelem',anast_elem)
+         define_1d_element_placenta('sample_geometry/FullTree.ipelem',anast_elem)
          export_directory = 'output_anast'
      else:
-         define_1d_elements('sample_geometry/FullTreeNoAnast.ipelem')
+         define_1d_element_placenta('sample_geometry/FullTreeNoAnast.ipelem')
          export_directory = 'output'
 
 The only other major difference now is that you have two inlets, if you copied this geometry as veins you'd then have

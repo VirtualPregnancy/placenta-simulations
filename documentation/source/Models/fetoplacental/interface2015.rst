@@ -25,8 +25,8 @@ These are packages you should have installed on your computer. The os package of
 
 	from reprosim.diagnostics import set_diagnostics_level
 	from reprosim.indices import perfusion_indices, get_ne_radius
-	from reprosim.geometry import append_units,define_node_geometry, define_1d_elements,define_rad_from_geom,add_matching_mesh, \
-        calc_capillary_unit_length,define_rad_from_file
+	from reprosim.geometry import append_units,define_node_geometry, define_1d_element_placenta,define_rad_from_geom,add_matching_mesh, \
+        calc_capillary_unit_length
 	from reprosim.exports import export_1d_elem_geometry, export_node_geometry, export_1d_elem_field,export_node_field,export_terminal_perfusion
 	from reprosim.pressure_resistance_flow import evaluate_prq, calculate_stats
 	
@@ -55,7 +55,7 @@ Next we set up the geometry that we are going to solve the model in. This involv
 .. code-block:: python
 
     define_node_geometry('sample_geometry/FullTree.ipnode')
-    define_1d_elements('sample_geometry/FullTree.ipelem')
+    define_1d_element_placenta('sample_geometry/FullTree.ipelem')
 	append_units()
 
 Here, nodes are the location of the start and end points of branches in our geometry and elements define the centrelines of these branches. The append_units command tells the code where our capillary bed sits within our geometry.
