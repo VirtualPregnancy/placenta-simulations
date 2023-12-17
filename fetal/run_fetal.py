@@ -8,7 +8,7 @@ from reprosim.geometry import append_units,define_node_geometry, define_1d_eleme
         define_capillary_model,define_rad_from_file
 from reprosim.repro_exports import export_1d_elem_geometry, export_node_geometry, export_1d_elem_field,export_node_field,export_terminal_perfusion
 from reprosim.fetal import assign_fetal_arrays, fetal_model
-
+from matplotlib import pyplot as plt
 ################################################
 # Set up a folder to export to
 ################################################
@@ -139,8 +139,38 @@ def main():
     define_capillary_model(num_convolutes, num_generations, num_parallel, 'interface2015')
 
 
-    fetal_model(dt,num_heart_beats,T_beat,T_vs,T_as,T_v_delay,U0RV,EsysRV,EdiaRV,RvRV,U0LV,EsysLV,EdiaLV,RvLV,U0A,V0V,V0A)
+    fetal_model(export_directory+'/',dt,num_heart_beats,T_beat,T_vs,T_as,T_v_delay,U0RV,EsysRV,EdiaRV,RvRV,U0LV,EsysLV,EdiaLV,RvLV,U0A,V0V,V0A)
 
+    ############################################
+    # PLOT RESULTS
+    #############################################
+    d = np.loadtxt(export_directory+'/results_element_flow.out', delimiter=",")
+    endpoint = len(d[:,23])
+    startpoint = len(d[:,23])-int(T_beat/dt*2.)
+    startpoint1 = len(d[:,23])-int(T_beat/dt)
+    # Element 21 is the MCA,add 1 because of time variables
+    r = 1.4  # mm
+    plt.title('Middle cerebral artery Doppler')
+    plt.xlabel('Time (s)')
+    plt.ylabel('Velocity (cm/s)')
+    plt.plot(d[startpoint:endpoint, 0] - d[startpoint, 0], d[startpoint:endpoint, 22] / (10. * np.pi * r ** 4.))  #
+    plt.show()
+    # Element 28 is the ductus venosus
+    plt.title('Ductus venosus Doppler')
+    plt.xlabel('Time (s)')
+    plt.ylabel('Velocity (cm/s)')
+    r = 0.9  # mm
+    plt.plot(d[startpoint:endpoint, 0] - d[startpoint, 0], d[startpoint:endpoint, 29] / (10. * np.pi * r ** 4.))  #
+    plt.show()
+    # Element 18 is the umbilical artery
+    # Umbilical artery radius
+    plt.title('Umbilical artery Doppler')
+    plt.xlabel('Time (s)')
+    plt.ylabel('Velocity (cm/s)')
+    r = inlet_rad  # mm
+    plt.plot(d[startpoint:endpoint, 0] - d[startpoint, 0],
+             d[startpoint:endpoint, 18] / (20. * np.pi * r ** 4.))  # There are two umbolical arteries
+    plt.show()
 
 if __name__ == '__main__':
     main()
