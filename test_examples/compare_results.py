@@ -85,7 +85,15 @@ def compare_perfusion_byrne2020():
 def compare_ellipsoid_tree_grow():
 
     #read in the terminal .exnode file
-    nodes_output = read_exnode('../geometry/grow-tree/output/terminals.exdata')
-    nodes_expected = read_exnode('../geometry/grow-tree/expected-results/terminals.exdata')
+    nodes_output = read_exnode('../geometry/grow-tree-ellipsoid/output/terminals.exdata')
+    nodes_expected = read_exnode('../geometry/grow-tree-ellipsoid/expected-results/terminals.exdata')
+    check_true = np.isclose(nodes_output[:,:],nodes_expected[:,:]).all()
+    return check_true
+
+def compare_cuboid_tree_grow():
+
+    #read in the terminal .exnode file
+    nodes_output = read_exnode('../geometry/grow-tree-cuboid/output/terminals.exdata')
+    nodes_expected = read_exnode('../geometry/grow-tree-cuboid/expected-results/terminals.exdata')
     check_true = np.isclose(nodes_output[:,:],nodes_expected[:,:]).all()
     return check_true

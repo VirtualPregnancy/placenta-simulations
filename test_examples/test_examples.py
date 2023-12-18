@@ -21,7 +21,7 @@ def main():
     #--------------------------------------------------
     #Test 1 - Grow tree
     #-------------------------------------------------
-    mydir_example1 = os.chdir("../geometry/grow-tree")
+    mydir_example1 = os.chdir("../geometry/grow-tree-ellipsoid")
     mydir_example1 =os.getcwd()
     os.system('rm -rf output/*') #remove any files in the output directory
     os.system('python grow-tree.py > '+ export_logs_dir + 'grow-tree.log') #run the model -> export
@@ -33,6 +33,24 @@ def main():
     else:
         print('ERROR: Ellipsoid tree growing model has FAILED')
         everything_worked = False
+
+    #--------------------------------------------------
+    #Test 1 - Grow tree
+    #-------------------------------------------------
+    mydir_example1 = os.chdir("../geometry/grow-tree-cuboid")
+    mydir_example1 =os.getcwd()
+    os.system('rm -rf output/*') #remove any files in the output directory
+    os.system('python grow-tree.py > '+ export_logs_dir + 'grow-tree.log') #run the model -> export
+    # terminal output to log file
+    os.chdir(mydir)
+    perfusion_worked = cr.compare_cuboid_tree_grow()
+    if(perfusion_worked):
+        print('Cuboid tree growing model works as expected')
+    else:
+        print('ERROR: Cuboid tree growing model has FAILED')
+        everything_worked = False
+
+
 
     #--------------------------------------------------
     #Test 1 - Perfusion model - run model and check
