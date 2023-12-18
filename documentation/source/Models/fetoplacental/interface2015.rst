@@ -1,10 +1,12 @@
-=========================================================
-Example 1 - Model from Clark et al. Interface Focus, 2015
-=========================================================
+=======================================================
+Example - Model from Clark et al. Interface Focus, 2015
+=======================================================
 
 This example is found in the directory placenta-simulations/fetoplacental/interface2015
 
-The example requires that you have the repsrosim libraries installed on your machine.
+The example requires that you have the reprosim libraries installed on your machine. You can find installation instructions
+`here <https://reprosim.readthedocs.io/en/latest/index.html#>`_ and the libraries themselves `here <https://github.com/virtualPregnancy/reprosim>`_.
+
 
 If you work in virtual environments, activate a virtual environment in which reprosim is installed and execute the following:
 

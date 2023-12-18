@@ -1,6 +1,6 @@
-================================================================
-Example 2 - Model from Byrne et al. 2020, two umbilical arteries
-================================================================
+==============================================================
+Example - Model from Byrne et al. 2020, two umbilical arteries
+==============================================================
 
 The previous example predicted steady state blood flow in a branching vascular network with one inlet. Mathematically
 this is simple, but physiologically the fetoplacental circulation has two inlets (the two umbilical arteries). This
@@ -8,7 +8,8 @@ example solves the same model as example 1, but allows for two umbilical arterie
 
 This example is found in the directory placenta-simulations/fetoplacental/two_umb_arteries
 
-The example requires that you have the repsrosim libraries installed on your machine.
+The example requires that you have the reprosim libraries installed on your machine. You can find installation instructions
+`here <https://reprosim.readthedocs.io/en/latest/index.html#>`_ and the libraries themselves `here <https://github.com/virtualPregnancy/reprosim>`_.
 
 If you work in virtual environments, activate a virtual environment in which reprosim is installed and execute the following:
 

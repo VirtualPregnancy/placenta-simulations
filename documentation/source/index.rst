@@ -40,6 +40,7 @@ is needed prior to use.
    Models/geometry/geometry_index
    Models/uteroplacental/utero_index
    Models/fetoplacental/feto_index
+   Models/fetal/fetal_index
 
 
 .. Indices and tables

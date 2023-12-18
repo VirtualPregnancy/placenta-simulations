@@ -59,8 +59,7 @@ where :math:`\mu` is viscosity of blood, L is the length of the blood vessel and
 
 
 If w consider the electrical resistance of any conductor (blood vessel in this case), we can see how the definition of Poiseuille resistance makes sense:
-
- :math:`R = \frac{\rho L}{A}`
+    :math:`R = \frac{\rho L}{A}`
 where  :math:`\rho` is the conductivity, R is the electrical resistance,  L is the length of the vessel and A is the area of cross section of the vessel.
 
 Now, after re-writing the poiseuille's resistance in terms of electrical resistance would result in:

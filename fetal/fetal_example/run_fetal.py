@@ -2,13 +2,15 @@ import os
 import numpy as np
 import placentagen as pg
 import csv
+from matplotlib import pyplot as plt
+
 from reprosim.diagnostics import set_diagnostics_level
 from reprosim.indices import perfusion_indices, get_ne_radius
 from reprosim.geometry import append_units,define_node_geometry, define_1d_element_geometry,define_1d_element_placenta,define_rad_from_geom,add_matching_mesh, \
         define_capillary_model,define_rad_from_file
 from reprosim.repro_exports import export_1d_elem_geometry, export_node_geometry, export_1d_elem_field,export_node_field,export_terminal_perfusion
 from reprosim.fetal import assign_fetal_arrays, fetal_model
-from matplotlib import pyplot as plt
+
 ################################################
 # Set up a folder to export to
 ################################################
