@@ -54,7 +54,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Repro Examples'
+project = u'Virtual Pregnancy'
 copyright = u'2018, Alys Clark'
 author = u'Alys Clark'
 
@@ -148,7 +148,7 @@ html_theme = 'alabaster'
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
 #
-# html_logo = None
+html_logo = 'image.jpg'
 
 # The name of an image file (relative to this directory) to use as a favicon of
 # the docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
@@ -253,19 +253,28 @@ latex_elements = {
      # 'pointsize': '10pt',
 
      # Additional stuff for the LaTeX preamble.
-     #
-     # 'preamble': '',
 
+
+     #
+     'preamble': '\setcounter{secnumdepth}{3} \setcounter{tocdepth}{3}'
      # Latex figure (float) alignment
      #
      # 'figure_align': 'htbp',
 }
+#latex_preamble = r"""
+#% ...
+
+#\setcounter{tocdepth}{5}
+#\setcounter{secnumdepth}{5}
+
+#% ...
+#"""
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'ReproExamples.tex', u'Repro Examples Documentation',
+    (master_doc, 'ReproExamples.tex', u'Placenta Simulations Documentation',
      u'Alys Clark', 'manual'),
 ]
 

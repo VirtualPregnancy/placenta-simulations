@@ -2,7 +2,7 @@
 Generating a tree structure that fills an ellipsoid
 ===============================================================
 
-This example is found in the directory placenta-simulations/geometry/grow-tree
+This example is found in the directory placenta-simulations/geometry/grow-tree-ellipsoid
 
 The example requires that you have numpy installed on your machine, and the placentagen libraries.
 
@@ -13,7 +13,7 @@ If you work in virtual environments, activate a virtual environment in which pla
     python grow-tree.py
 	
 	
-This executes the file that runs the example (01-grow-tree.py). If you open this file you'll see that the code has a number of requirements
+This executes the file that runs the example (grow-tree.py). If you open this file you'll see that the code has a number of requirements
 
 .. code-block:: python 
 

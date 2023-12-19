@@ -4,8 +4,8 @@
 import os
 from reprosim.diagnostics import set_diagnostics_level
 from reprosim.indices import perfusion_indices, get_ne_radius
-from reprosim.geometry import append_units,define_node_geometry, define_1d_elements,define_rad_from_geom,add_matching_mesh, \
-        define_capillary_model,define_rad_from_file
+from reprosim.geometry import append_units,define_node_geometry, define_1d_element_placenta,define_rad_from_geom,add_matching_mesh, \
+        define_capillary_model
 from reprosim.repro_exports import export_1d_elem_geometry, export_node_geometry, export_1d_elem_field,export_node_field,export_terminal_perfusion
 from reprosim.pressure_resistance_flow import evaluate_prq, calculate_stats
 
@@ -20,7 +20,7 @@ def main():
     #define model geometry and indices
     perfusion_indices()
     define_node_geometry('sample_geometry/FullTree.ipnode')
-    define_1d_elements('sample_geometry/FullTree.ipelem')
+    define_1d_element_placenta('sample_geometry/FullTree.ipelem')
 
     mesh_type = 'full_plus_tube'
     # mesh_type: can be 'simple_tree' or 'full_plus_tube'. Simple_tree is the input

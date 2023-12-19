@@ -1,6 +1,6 @@
-================================================================
-Example 2 - Model from Byrne et al. 2020, two umbilical arteries
-================================================================
+==============================================================
+Example - Model from Byrne et al. 2020, two umbilical arteries
+==============================================================
 
 The previous example predicted steady state blood flow in a branching vascular network with one inlet. Mathematically
 this is simple, but physiologically the fetoplacental circulation has two inlets (the two umbilical arteries). This
@@ -8,7 +8,8 @@ example solves the same model as example 1, but allows for two umbilical arterie
 
 This example is found in the directory placenta-simulations/fetoplacental/two_umb_arteries
 
-The example requires that you have the repsrosim libraries installed on your machine.
+The example requires that you have the reprosim libraries installed on your machine. You can find installation instructions
+`here <https://reprosim.readthedocs.io/en/latest/index.html#>`_ and the libraries themselves `here <https://github.com/virtualPregnancy/reprosim>`_.
 
 If you work in virtual environments, activate a virtual environment in which reprosim is installed and execute the following:
 
@@ -30,16 +31,16 @@ the code 1) which element your anastomosis is, and 2) its radius. In the code, t
      anast_radius = 1.0
 
 You will see further down the code, that this logical tells the code to read in the appropriate .ipelem file, and
-that an optional argument to the define_1d_elements function in reprosim then tells that codebase whether to include
+that an optional argument to the define_1d_element_placenta function in reprosim then tells that codebase whether to include
 an anastomosis or not.
 
 .. code-block:: python
 
      if(Anastomosis):
-         define_1d_elements('sample_geometry/FullTree.ipelem',anast_elem)
+         define_1d_element_placenta('sample_geometry/FullTree.ipelem',anast_elem)
          export_directory = 'output_anast'
      else:
-         define_1d_elements('sample_geometry/FullTreeNoAnast.ipelem')
+         define_1d_element_placenta('sample_geometry/FullTreeNoAnast.ipelem')
          export_directory = 'output'
 
 The only other major difference now is that you have two inlets, if you copied this geometry as veins you'd then have
