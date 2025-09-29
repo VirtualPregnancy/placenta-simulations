@@ -11,15 +11,19 @@ from reprosim.geometry import append_units,define_node_geometry, define_1d_eleme
 from reprosim.repro_exports import export_1d_elem_geometry, export_node_geometry, export_1d_elem_field,export_node_field,export_terminal_perfusion
 from reprosim.fetal import assign_fetal_arrays, fetal_model
 
+##################################################################################
+# Define whether to use a placental model to calculate Umbilical artery resistance
+##################################################################################
+use_plac_model = not True
 ################################################
 # Set up a folder to export to
 ################################################
 #Define a directory to export (do not write over expected-results unless you have made a (peer-reviewed) change to the process)
+output_model_type = 'placenta_model' if use_plac_model else 'no_placenta_model'
 export_directory = 'output'
+export_directory = os.path.join(export_directory, output_model_type)
 if not os.path.exists(export_directory):
     os.makedirs(export_directory)
-
-
 ####################################################################
 # Define timestep and number of heart beats that are to be simulated
 ####################################################################
@@ -103,49 +107,53 @@ pg.export_ip_coords(nodes[:,1:4], 'fetal', export_directory +'/fetal')
 def main():
     set_diagnostics_level(0)  # level 0 - no diagnostics; level 1 - only prints subroutine names (default); level 2 - prints subroutine names and contents of variables
 
-
+    
     # define model geometry and indices
     perfusion_indices()
     define_node_geometry(export_directory +'/fetal.ipnode')
     define_1d_element_geometry(export_directory + '/fetal.ipelem')
     assign_fetal_arrays()
 
-    define_node_geometry('sample_geometry/placenta.ipnode')
-    define_1d_element_placenta('sample_geometry/placenta.ipelem')
-    append_units()
+    inlet_rad = 1.5  # inlet radius for UA
+    if use_plac_model:
+        define_node_geometry('sample_geometry/placenta.ipnode')
+        define_1d_element_placenta('sample_geometry/placenta.ipelem')
+        append_units()
 
-    # creates a mesh that converges (a venous mesh)
-    umbilical_elem_option = 'same_as_arterial'
-    umbilical_elements = []
-    add_matching_mesh(umbilical_elem_option, umbilical_elements)
+        # creates a mesh that converges (a venous mesh)
+        umbilical_elem_option = 'same_as_arterial'
+        umbilical_elements = []
+        add_matching_mesh(umbilical_elem_option, umbilical_elements)
 
-    # define radius by Strahler order in diverging (arterial mesh)
-    s_ratio = 1.38  # rate of decrease in radius at each order of the arterial tree  1.38
-    inlet_rad = 1.5  # inlet radius
-    order_system = 'strahler'
-    order_options = 'arterial'
-    name = 'inlet'
-    define_rad_from_geom(order_system, s_ratio, name, inlet_rad, order_options, '')
-    # defines radius by STrahler order in converging (venous mesh)
-    s_ratio_ven = 1.46  # rate of decrease in radius at each order of the venous tree 1.46
-    inlet_rad_ven = 2.7  # inlet radius
-    order_system = 'strahler'
-    order_options = 'venous'
-    first_ven_no = ''  # number of elements read in plus one
-    last_ven_no = ''  # 2x the original number of elements + number of connections
-    define_rad_from_geom(order_system, s_ratio_ven, first_ven_no, inlet_rad_ven, order_options, last_ven_no)
+        # define radius by Strahler order in diverging (arterial mesh)
+        s_ratio = 1.38  # rate of decrease in radius at each order of the arterial tree  1.38
+        order_system = 'strahler'
+        order_options = 'arterial'
+        name = 'inlet'
+        define_rad_from_geom(order_system, s_ratio, name, inlet_rad, order_options, '')
+        # defines radius by STrahler order in converging (venous mesh)
+        s_ratio_ven = 1.46  # rate of decrease in radius at each order of the venous tree 1.46
+        inlet_rad_ven = 2.7  # inlet radius
+        order_system = 'strahler'
+        order_options = 'venous'
+        first_ven_no = ''  # number of elements read in plus one
+        last_ven_no = ''  # 2x the original number of elements + number of connections
+        define_rad_from_geom(order_system, s_ratio_ven, first_ven_no, inlet_rad_ven, order_options, last_ven_no)
 
-    num_convolutes = 10  # number of terminal convolute connections
-    num_generations = 3  # number of generations of symmetric intermediate villous trees
-    num_parallel = 6  # number of capillaries per convolute
-    define_capillary_model(num_convolutes, num_generations, num_parallel, 'interface2015')
+        num_convolutes = 10  # number of terminal convolute connections
+        num_generations = 3  # number of generations of symmetric intermediate villous trees
+        num_parallel = 6  # number of capillaries per convolute
+        define_capillary_model(num_convolutes, num_generations, num_parallel, 'interface2015')
 
-
-    fetal_model(export_directory+'/',dt,num_heart_beats,T_beat,T_vs,T_as,T_v_delay,U0RV,EsysRV,EdiaRV,RvRV,U0LV,EsysLV,EdiaLV,RvLV,U0A,V0V,V0A)
+    fetal_model(export_directory+'/',dt,num_heart_beats,T_beat,T_vs,T_as,T_v_delay,U0RV,EsysRV,EdiaRV,RvRV,U0LV,EsysLV,EdiaLV,RvLV,U0A,V0V,V0A,int(use_plac_model))
 
     ############################################
     # PLOT RESULTS
     #############################################
+    # the results file writes out the element flow in columns, however the first two columns are total solution time,
+    # and time within the current heartbeat respectively, this means that column 2 (the third column when indexing from
+    # zero, corresponds to the flows from element 1. Thus adding 1 to the element index will give the appropriate column
+    # index when extracting results
     d = np.loadtxt(export_directory+'/results_element_flow.out', delimiter=",")
     endpoint = len(d[:,23])
     startpoint = len(d[:,23])-int(T_beat/dt*2.)
@@ -155,14 +163,14 @@ def main():
     plt.title('Middle cerebral artery Doppler')
     plt.xlabel('Time (s)')
     plt.ylabel('Velocity (cm/s)')
-    plt.plot(d[startpoint:endpoint, 0] - d[startpoint, 0], d[startpoint:endpoint, 22] / (10. * np.pi * r ** 4.))  #
+    plt.plot(d[startpoint:endpoint, 0] - d[startpoint, 0], d[startpoint:endpoint, 21+1] / (10. * np.pi * r ** 4.))  #
     plt.show()
     # Element 28 is the ductus venosus
     plt.title('Ductus venosus Doppler')
     plt.xlabel('Time (s)')
     plt.ylabel('Velocity (cm/s)')
     r = 0.9  # mm
-    plt.plot(d[startpoint:endpoint, 0] - d[startpoint, 0], d[startpoint:endpoint, 29] / (10. * np.pi * r ** 4.))  #
+    plt.plot(d[startpoint:endpoint, 0] - d[startpoint, 0], d[startpoint:endpoint, 28+1] / (10. * np.pi * r ** 4.))  #
     plt.show()
     # Element 18 is the umbilical artery
     # Umbilical artery radius
@@ -171,10 +179,10 @@ def main():
     plt.ylabel('Velocity (cm/s)')
     r = inlet_rad  # mm
     plt.plot(d[startpoint:endpoint, 0] - d[startpoint, 0],
-             d[startpoint:endpoint, 18] / (20. * np.pi * r ** 4.))  # There are two umbolical arteries
+             d[startpoint:endpoint, 18+1] / (20. * np.pi * r ** 4.))  # There are two umbolical arteries
     plt.show()
     print("Umbilical artery volume flow")
-    print(np.mean(d[startpoint:endpoint, 18]))
+    print(np.mean(d[startpoint:endpoint, 18+1]))
 
 if __name__ == '__main__':
     main()
