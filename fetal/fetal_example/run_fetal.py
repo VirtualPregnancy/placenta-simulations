@@ -14,7 +14,7 @@ from reprosim.fetal import assign_fetal_arrays, fetal_model
 ##################################################################################
 # Define whether to use a placental model to calculate Umbilical artery resistance
 ##################################################################################
-use_plac_model = not True
+use_plac_model = True
 ################################################
 # Set up a folder to export to
 ################################################
